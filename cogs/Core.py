@@ -21,7 +21,7 @@ class Core(commands.Cog):
         現在聴いている曲を表示します。
         """
 
-        await ctx.defer(ephemeral=True)
+        await ctx.defer(ephemeral=False)
         member = ctx.guild.get_member(ctx.author.id)
         if member and member.activities:
             m_activity = None
