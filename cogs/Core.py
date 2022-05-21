@@ -24,7 +24,7 @@ class Core(commands.Cog):
         """
 
         try:
-            member = ctx.guild.get_member(ctx.author.id)
+            member = ctx.author
             if member and member.activities:
                 m_activity = None
                 for act in member.activities:
@@ -43,7 +43,7 @@ class Core(commands.Cog):
                 else:
                     await ctx.respond('現在、Spotifyで再生していないようです。', ephemeral=True)
             else:
-                await ctx.respond('現在、Spotifyで再生していないようです。', ephemeral=True)
+                await ctx.respond('アクティビティが検出されませんでした', ephemeral=True)
         except Exception as error:
             tracebacks = getattr(error, 'traceback', error)
             tracebacks = ''.join(traceback.TracebackException.from_exception(tracebacks).format())
