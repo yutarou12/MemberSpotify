@@ -25,16 +25,13 @@ class Core(commands.Cog):
 
         try:
             member = ctx.guild.get_member(ctx.author.id)
-            print(member)
             if member:
                 if member.activities:
-                    print(member.activities)
                     m_activity = None
                     for act in member.activities:
                         if isinstance(act, discord.Spotify):
                             m_activity = act
                             break
-                    print(m_activity)
                     if m_activity:
                         embed = discord.Embed(title=f'{member.name} が聴いている曲')
                         embed.set_thumbnail(url=member.display_avatar.url)
@@ -45,12 +42,11 @@ class Core(commands.Cog):
                         embed.set_image(url=m_activity.album_cover_url)
                         await ctx.respond(embed=embed, ephemeral=False)
                     else:
-                        await ctx.respond('現在、Spotifyで再生していないようです。', ephemeral=False)
+                        await ctx.respond('Spotifyで再生していないようです。', ephemeral=True)
                 else:
-                    print(member.activities)
-                    await ctx.respond('アクティビティが検出されませんでした')
+                    await ctx.respond('Spotifyで再生していないようです。', ephemeral=True)
             else:
-                await ctx.respond('アクティビティが検出されませんでした', ephemeral=False)
+                await ctx.respond('メンバーを取得できませんでした。', ephemeral=True)
         except Exception as error:
             tracebacks = getattr(error, 'traceback', error)
             tracebacks = ''.join(traceback.TracebackException.from_exception(tracebacks).format())
