@@ -29,21 +29,11 @@ class Core(commands.Cog):
                     m_activity = act
                     break
             if m_activity:
-                client_id = os.environ.get('SPOTIFY_CLIENT_ID')
-                client_secret = os.environ.get('SPOTIFY_CLIENT_SECRET')
-                client_credentials_manager = SpotifyClientCredentials(client_id, client_secret)
-
-                spotify = spotipy.Spotify(client_credentials_manager=client_credentials_manager)
-                result = spotify.track(m_activity.track_id)
-                release_date = result['album']['release_date'].replace('-', '/', 2) if result else '取得不可'
-
                 embed = discord.Embed(title=f'{member.name} が聴いている曲')
                 embed.set_thumbnail(url=member.display_avatar.url)
                 embed.add_field(name='曲名', value=m_activity.title)
                 embed.add_field(name='アーティスト', value=m_activity.artist)
                 embed.add_field(name='アルバム', value=m_activity.album, inline=False)
-                embed.add_field(name='曲の長さ', value=str(m_activity.duration).split('.')[0])
-                embed.add_field(name='リリース日', value=release_date)
                 embed.add_field(name='URL', value=f'[自分も聴く]({m_activity.track_url})', inline=False)
                 embed.set_image(url=m_activity.album_cover_url)
                 await ctx.respond(embed=embed)
