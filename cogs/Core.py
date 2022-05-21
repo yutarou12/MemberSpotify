@@ -1,3 +1,5 @@
+import logging
+import traceback
 import os
 import requests
 import codecs
@@ -22,24 +24,29 @@ class Core(commands.Cog):
         """
 
         await ctx.defer(ephemeral=False)
-        member = ctx.guild.get_member(ctx.author.id)
-        if member and member.activities:
-            m_activity = None
-            for act in member.activities:
-                if isinstance(act, discord.Spotify):
-                    m_activity = act
-                    break
-            if m_activity:
-                embed = discord.Embed(title=f'{member.name} が聴いている曲')
-                embed.set_thumbnail(url=member.display_avatar.url)
-                embed.add_field(name='曲名', value=m_activity.title)
-                embed.add_field(name='アーティスト', value=m_activity.artist)
-                embed.add_field(name='アルバム', value=m_activity.album, inline=False)
-                embed.add_field(name='URL', value=f'[自分も聴く]({m_activity.track_url})', inline=False)
-                embed.set_image(url=m_activity.album_cover_url)
-                await ctx.respond(embed=embed, ephemeral=False)
-            else:
-                await ctx.respond('現在、Spotifyで再生していないようです。', ephemeral=True)
+        try:
+            member = ctx.guild.get_member(ctx.author.id)
+            if member and member.activities:
+                m_activity = None
+                for act in member.activities:
+                    if isinstance(act, discord.Spotify):
+                        m_activity = act
+                        break
+                if m_activity:
+                    embed = discord.Embed(title=f'{member.name} が聴いている曲')
+                    embed.set_thumbnail(url=member.display_avatar.url)
+                    embed.add_field(name='曲名', value=m_activity.title)
+                    embed.add_field(name='アーティスト', value=m_activity.artist)
+                    embed.add_field(name='アルバム', value=m_activity.album, inline=False)
+                    embed.add_field(name='URL', value=f'[自分も聴く]({m_activity.track_url})', inline=False)
+                    embed.set_image(url=m_activity.album_cover_url)
+                    await ctx.respond(embed=embed, ephemeral=False)
+                else:
+                    await ctx.respond('現在、Spotifyで再生していないようです。', ephemeral=True)
+        except Exception as error:
+            tracebacks = getattr(error, 'traceback', error)
+            tracebacks = ''.join(traceback.TracebackException.from_exception(tracebacks).format())
+            logging.error(tracebacks)
 
 
 """

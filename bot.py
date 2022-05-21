@@ -1,5 +1,6 @@
 import os
 from abc import ABC
+import logging
 
 import discord
 from discord.ext import commands, tasks
@@ -45,6 +46,7 @@ async def on_ready():
 
 if __name__ == '__main__':
     bot.config = config
+    logging.basicConfig(level=logging.WARNING)
 
     other_extension = ['jishaku']
     for o_extension in other_extension:
