@@ -24,7 +24,7 @@ class Core(commands.Cog):
         """
 
         try:
-            member = await ctx.guild.fetch_member(ctx.author.id)
+            member = await ctx.guild.get_member(ctx.author.id)
             print(member)
             if member:
                 if member.activities:
