@@ -37,7 +37,7 @@ class Core(commands.Cog):
                 embed.add_field(name='アルバム', value=m_activity.album, inline=False)
                 embed.add_field(name='URL', value=f'[自分も聴く]({m_activity.track_url})', inline=False)
                 embed.set_image(url=m_activity.album_cover_url)
-                await ctx.respond(embed=embed)
+                await ctx.respond(embed=embed, ephemeral=False)
             else:
                 await ctx.respond('現在、Spotifyで再生していないようです。', ephemeral=True)
 
