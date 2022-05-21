@@ -23,7 +23,6 @@ class Core(commands.Cog):
         現在聴いている曲を表示します。
         """
 
-        await ctx.defer(ephemeral=False)
         try:
             member = ctx.guild.get_member(ctx.author.id)
             if member and member.activities:
@@ -43,6 +42,8 @@ class Core(commands.Cog):
                     await ctx.respond(embed=embed, ephemeral=False)
                 else:
                     await ctx.respond('現在、Spotifyで再生していないようです。', ephemeral=True)
+            else:
+                await ctx.respond('現在、Spotifyで再生していないようです。', ephemeral=True)
         except Exception as error:
             tracebacks = getattr(error, 'traceback', error)
             tracebacks = ''.join(traceback.TracebackException.from_exception(tracebacks).format())
