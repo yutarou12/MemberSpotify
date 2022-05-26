@@ -2,8 +2,6 @@ import logging
 import traceback
 import os
 import requests
-import codecs
-import base64
 
 import discord
 from discord.ext import commands
@@ -33,6 +31,10 @@ class Core(commands.Cog):
                             m_activity = act
                             break
                     if m_activity:
+                        text = f'Now Listening Music 🎶 - `{member.name}`\n' \
+                               f'Music Title: {m_activity.title}({m_activity.artist})' \
+                               f'{m_activity.track_url}'
+                        """
                         embed = discord.Embed(title=f'{member.name} が聴いている曲')
                         embed.set_thumbnail(url=member.display_avatar.url)
                         embed.add_field(name='曲名', value=m_activity.title)
@@ -40,7 +42,8 @@ class Core(commands.Cog):
                         embed.add_field(name='アルバム', value=m_activity.album, inline=False)
                         embed.add_field(name='URL', value=f'[自分も聴く]({m_activity.track_url})', inline=False)
                         embed.set_image(url=m_activity.album_cover_url)
-                        await ctx.respond(embed=embed, ephemeral=False)
+                        """
+                        await ctx.respond(text, ephemeral=False)
                     else:
                         await ctx.respond('Spotifyで再生していないようです。', ephemeral=True)
                 else:
