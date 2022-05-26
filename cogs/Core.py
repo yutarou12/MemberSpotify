@@ -32,7 +32,7 @@ class Core(commands.Cog):
                             break
                     if m_activity:
                         text = f'Now Listening Music 🎶 - `{member.name}`\n' \
-                               f'Music Title: {m_activity.title}({m_activity.artist})\n' \
+                               f'Music Title: `{m_activity.title}({m_activity.artist})`\n' \
                                f'{m_activity.track_url}'
                         """
                         embed = discord.Embed(title=f'{member.name} が聴いている曲')
