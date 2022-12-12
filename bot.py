@@ -1,5 +1,4 @@
 import os
-from abc import ABC
 import logging
 
 import discord
@@ -16,22 +15,36 @@ config = {
                                          scopes=['bot', 'applications.commands'])
 }
 
-extensions_list = [f[:-3] for f in os.listdir("./cogs") if f.endswith(".py")]
+extensions_list = ['jishaku', 'Core', 'Main']
 
 
-class MyBot(commands.Bot, ABC):
+class MyBot(commands.Bot):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.tree.on_error = self.on_app_command_error
+
+    async def on_app_command_error(self, interaction: Interaction, error: AppCommandError):
+        tracebacks = getattr(error, 'traceback', error)
+        tracebacks = ''.join(traceback.TracebackException.from_exception(tracebacks).format())
+        logging.error(tracebacks)
 
     async def get_context(self, message, *args, **kwargs):
         return await super().get_context(message, *args, **kwargs)
 
+    async def setup_hook(self):
+        for extension in extensions_list:
+            self.bot.load_extension(f'cogs.{extension}')
+
 
 intents = discord.Intents.all()
+intents.typing = False
+intents.dm_typing = False
+
 bot = MyBot(
-    command_prefix=config['prefix'],
+    command_prefix=commands.when_mentioned_or(config['prefix']),
     intents=intents,
-    help_command=None
+    help_command=None,
+    allowed_mentions=discord.AllowedMentions(replied_user=False, everyone=False),
 )
 
 
@@ -42,22 +55,10 @@ async def on_ready():
     await bot.change_presence(
         activity=discord.Game(name=f'/help | Get a MemberActivity')
     )
+    await bot.tree.sync()
 
 
 if __name__ == '__main__':
     bot.config = config
-    logging.basicConfig(level=logging.WARNING)
-
-    other_extension = ['jishaku']
-    for o_extension in other_extension:
-        try:
-            bot.load_extension(o_extension)
-        except discord.ExtensionAlreadyLoaded:
-            bot.reload_extension(o_extension)
-    for extension in extensions_list:
-        try:
-            bot.load_extension(f'cogs.{extension}')
-        except discord.ExtensionAlreadyLoaded:
-            bot.reload_extension(f'cogs.{extension}')
 
     bot.run(os.getenv('DISCORD_BOT_TOKEN'))
