@@ -17,7 +17,7 @@ config = {
                                          scopes=['bot', 'applications.commands'])
 }
 
-extensions_list = ['jishaku', 'Core', 'Main']
+extensions_list = ['jishaku', 'cogs.Core', 'cogs.Main']
 
 
 class MyBot(commands.Bot):
@@ -32,7 +32,7 @@ class MyBot(commands.Bot):
 
     async def setup_hook(self):
         for extension in extensions_list:
-            await self.load_extension(f'cogs.{extension}')
+            await self.load_extension(f'{extension}')
 
     async def get_context(self, message, *args, **kwargs):
         return await super().get_context(message, *args, **kwargs)
