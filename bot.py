@@ -30,12 +30,12 @@ class MyBot(commands.Bot):
         tracebacks = ''.join(traceback.TracebackException.from_exception(tracebacks).format())
         logging.error(tracebacks)
 
-    async def get_context(self, message, *args, **kwargs):
-        return await super().get_context(message, *args, **kwargs)
-
     async def setup_hook(self):
         for extension in extensions_list:
-            self.bot.load_extension(f'cogs.{extension}')
+            await self.load_extension(f'cogs.{extension}')
+
+    async def get_context(self, message, *args, **kwargs):
+        return await super().get_context(message, *args, **kwargs)
 
 
 intents = discord.Intents.all()
