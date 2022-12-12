@@ -2,6 +2,8 @@ import os
 import logging
 
 import discord
+from discord import Interaction
+from discord.app_commands import AppCommandError
 from discord.ext import commands, tasks
 from dotenv import load_dotenv
 
