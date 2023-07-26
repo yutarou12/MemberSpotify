@@ -1,14 +1,6 @@
-import logging
-import traceback
-import os
-import requests
-
 import discord
 from discord.ext import commands
 from discord import app_commands
-
-import spotipy
-from spotipy.oauth2 import SpotifyClientCredentials
 
 
 class Core(commands.Cog):
@@ -25,7 +17,7 @@ class Core(commands.Cog):
         if not member:
             return await interaction.response.send_message('メンバーを取得できませんでした。', ephemeral=True)
 
-        if member.activities:
+        if not member.activities:
             return await interaction.response.send_message('Spotifyで再生していないようです。', ephemeral=True)
 
         m_activity = None

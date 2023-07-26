@@ -1,10 +1,11 @@
 import os
+import traceback
 import logging
 
 import discord
 from discord import Interaction
 from discord.app_commands import AppCommandError
-from discord.ext import commands, tasks
+from discord.ext import commands
 from dotenv import load_dotenv
 
 load_dotenv()
